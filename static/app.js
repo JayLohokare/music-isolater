@@ -81,6 +81,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: formData
             });
 
+            const contentType = response.headers.get("content-type");
+            if (!contentType || !contentType.includes("application/json")) {
+                throw new Error("The AI backend is currently waking up or building. Please wait 1-2 minutes and try again.");
+            }
+
             const data = await response.json();
 
             if (!response.ok) {
@@ -102,6 +107,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const interval = setInterval(async () => {
             try {
                 const response = await fetch(`https://jaylohokare-aura-splitter.hf.space/status/${taskId}`);
+                
+                const contentType = response.headers.get("content-type");
+                if (!contentType || !contentType.includes("application/json")) {
+                    console.log("Backend returning non-JSON. System might be waking up...");
+                    return; // Skip this iteration and wait for next interval
+                }
+
                 const data = await response.json();
 
                 if (data.status === 'done') {
