@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Music Separator</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background-effects">
+        <div class="glow glow-1"></div>
+        <div class="glow glow-2"></div>
+    </div>
+
+    <div class="container">
+        <header>
+            <div class="logo">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 18V5L21 3V16" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M6 21C7.65685 21 9 19.6569 9 18C9 16.3431 7.65685 15 6 15C4.34315 15 3 16.3431 3 18C3 19.6569 4.34315 21 6 21Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M18 19C19.6569 19 21 17.6569 21 16C21 14.3431 19.6569 13 18 13C16.3431 13 15 14.3431 15 16C15 17.6569 16.3431 19 18 19Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <h2>Aura Splitter</h2>
+            </div>
+            <p class="subtitle">Upload any song to instantly isolate vocals, drums, bass, and instruments using state-of-the-art AI.</p>
+        </header>
+
+        <main>
+            <!-- Start State -->
+            <div id="upload-panel" class="panel active">
+                <input type="file" id="file-input" accept=".mp3,.wav,.flac,.ogg,.m4a" hidden>
+                <div class="dropzone" id="dropzone">
+                    <div class="dropzone-content">
+                        <div class="icon-container">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M17 8L12 3L7 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M12 3V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <h3>Upload File to Split</h3>
+                        <p>Drag & drop or click to browse</p>
+                        <span class="file-limits">Supports MP3, WAV, FLAC (Max 50MB)</span>
+                    </div>
+                </div>
+                <div id="error-message" class="error-text hidden"></div>
+            </div>
+
+            <!-- Processing State -->
+            <div id="processing-panel" class="panel hidden">
+                <div class="waveform-loader">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+                <h3 id="processing-status">Uploading...</h3>
+                <p>AI is splitting your song into individual stems. This can take a few minutes.</p>
+            </div>
+
+            <!-- Result State -->
+            <div id="result-panel" class="panel hidden">
+                <div class="result-header">
+                    <h3>Separation Complete</h3>
+                    <button class="btn btn-secondary" id="reset-btn">Split Another</button>
+                </div>
+                
+                <div id="tracks-container" class="tracks-list">
+                    <!-- Populated via JS -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
