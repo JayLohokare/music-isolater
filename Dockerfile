@@ -26,3 +26,5 @@ RUN mkdir -p uploads separated cache && chmod -R 777 uploads separated cache
 
 # Command to run our Flask app
 CMD ["python", "app.py"]
+
+# Force Docker Rebuild 1
