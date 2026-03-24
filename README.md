@@ -1,4 +1,14 @@
-# Guitar Isolator
+---
+title: Aura Splitter
+emoji: 🎵
+colorFrom: blue
+colorTo: purple
+sdk: docker
+pinned: false
+app_port: 7860
+---
+
+# Aura Splitter (Music Isolater)
 
 This Python script uses [Demucs](https://github.com/adefossez/demucs) (specifically the `htdemucs_6s` model) to isolate the guitar track from any given audio file.
 
