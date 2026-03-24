@@ -2,3 +2,4 @@ demucs
 torch
 Flask
 Werkzeug
+flask-cors

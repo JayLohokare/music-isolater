@@ -2,10 +2,12 @@ import os
 import uuid
 import threading
 import subprocess
-from flask import Flask, request, jsonify, render_template, send_from_directory
+from flask import Flask, request, jsonify, send_from_directory
+from flask_cors import CORS
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
+CORS(app)
 
 # Config
 UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), 'uploads')
@@ -64,7 +66,7 @@ def process_audio(task_id, file_path):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return send_from_directory('.', 'index.html')
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
