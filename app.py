@@ -12,7 +12,7 @@ CORS(app)
 # Config
 UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), 'uploads')
 SEPARATED_FOLDER = os.path.join(os.path.dirname(__file__), 'separated')
-ALLOWED_EXTENSIONS = {'mp3', 'wav', 'flac', 'ogg', 'm4a'}
+ALLOWED_EXTENSIONS = {'mp3', 'wav', 'flac', 'ogg', 'm4a', 'mp4', 'mov', 'avi', 'mkv'}
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(SEPARATED_FOLDER, exist_ok=True)
@@ -93,7 +93,7 @@ def upload_file():
         
         return jsonify({'task_id': task_id, 'message': 'Upload successful. Processing started.'})
     
-    return jsonify({'error': 'Invalid file type. Supported types: mp3, wav, flac, ogg, m4a'}), 400
+    return jsonify({'error': 'Invalid file type. Supported types: mp3, wav, flac, ogg, m4a, mp4, mov, avi, mkv'}), 400
 
 @app.route('/status/<task_id>', methods=['GET'])
 def get_status(task_id):

@@ -63,8 +63,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function handleFile(file) {
         // Basic validation
-        const validTypes = ['audio/mpeg', 'audio/wav', 'audio/flac', 'audio/ogg', 'audio/mp4'];
-        if (!validTypes.includes(file.type) && !file.name.match(/\.(mp3|wav|flac|ogg|m4a)$/i)) {
+        const validTypes = ['audio/mpeg', 'audio/wav', 'audio/flac', 'audio/ogg', 'audio/mp4', 'video/mp4', 'video/quicktime', 'video/x-msvideo', 'video/x-matroska'];
+        if (!validTypes.includes(file.type) && !file.name.match(/\.(mp3|wav|flac|ogg|m4a|mp4|mov|avi|mkv)$/i)) {
             showError("Invalid file type. Please upload an audio file.");
             return;
         }
