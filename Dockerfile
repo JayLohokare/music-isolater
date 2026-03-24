@@ -17,8 +17,12 @@ COPY . .
 ENV PORT=7860
 EXPOSE 7860
 
-# Create upload and separated directories and make them writable
-RUN mkdir -p uploads separated && chmod -R 777 uploads separated
+# Prevent permissions issues downloading PyTorch AI models in HF
+ENV TORCH_HOME=/app/cache
+ENV HF_HOME=/app/cache
+
+# Create required directories and make them writable for the non-root user
+RUN mkdir -p uploads separated cache && chmod -R 777 uploads separated cache
 
 # Command to run our Flask app
 CMD ["python", "app.py"]
