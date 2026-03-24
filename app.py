@@ -49,6 +49,7 @@ def process_audio(task_id, file_path):
     
     command = [
         "demucs",
+        "--mp3",
         "-n", model,
         "-o", SEPARATED_FOLDER,
         file_path

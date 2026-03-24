@@ -115,6 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 const data = await response.json();
+                const stems = ['vocals.mp3', 'drums.mp3', 'bass.mp3', 'other.mp3'];
 
                 if (data.status === 'done') {
                     clearInterval(interval);
