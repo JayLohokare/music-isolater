@@ -3,8 +3,8 @@ FROM python:3.9-slim
 # Set up the working directory inside the container
 WORKDIR /app
 
-# Demucs and torchaudio require ffmpeg and libsndfile1 for processing audio
-RUN apt-get update && apt-get install -y ffmpeg libsndfile1 && rm -rf /var/lib/apt/lists/*
+# Demucs and torchaudio require ffmpeg, libsndfile1, and sox for backend processing
+RUN apt-get update && apt-get install -y ffmpeg libsndfile1 sox libsox-fmt-all && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements and install them
 COPY requirements.txt .

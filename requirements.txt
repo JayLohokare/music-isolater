@@ -3,3 +3,4 @@ torch
 Flask
 Werkzeug
 flask-cors
+soundfile
