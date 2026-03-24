@@ -28,6 +28,21 @@ def process_audio(task_id, file_path):
     print(f"[{task_id}] Starting demucs processing for {file_path}")
     TASKS[task_id]['status'] = 'processing'
     
+    # Extract audio from video files using ffmpeg to prevent demucs crash
+    ext = file_path.rsplit('.', 1)[1].lower()
+    if ext in ['mp4', 'mov', 'avi', 'mkv']:
+        print(f"[{task_id}] Extracting audio from video format: {ext}")
+        audio_path = file_path.rsplit('.', 1)[0] + '.wav'
+        try:
+            subprocess.run(["ffmpeg", "-y", "-i", file_path, "-vn", "-acodec", "pcm_s16le", "-ar", "44100", "-ac", "2", audio_path], check=True, capture_output=True)
+            file_path = audio_path
+            print(f"[{task_id}] Successfully converted video to {audio_path}")
+        except subprocess.CalledProcessError as e:
+            print(f"[{task_id}] FFmpeg extraction error.")
+            TASKS[task_id]['status'] = 'error'
+            TASKS[task_id]['error'] = "Failed to extract audio from the uploaded video file."
+            return
+
     # htdemucs separates into 4 stems: vocals, drums, bass, other
     # Faster to process and download than the 6 stem model, perfect for a web app demo
     model = "htdemucs"
