@@ -28,19 +28,19 @@ def process_audio(task_id, file_path):
     print(f"[{task_id}] Starting demucs processing for {file_path}")
     TASKS[task_id]['status'] = 'processing'
     
-    # Extract audio from video files using ffmpeg to prevent demucs crash
-    ext = file_path.rsplit('.', 1)[1].lower()
-    if ext in ['mp4', 'mov', 'avi', 'mkv']:
-        print(f"[{task_id}] Extracting audio from video format: {ext}")
-        audio_path = file_path.rsplit('.', 1)[0] + '.wav'
+    # Standardize all files to a uniform WAV using FFmpeg to prevent Demucs (torchaudio) codec crashes
+    print(f"[{task_id}] Standardizing audio format via FFmpeg...")
+    audio_path = file_path.rsplit('.', 1)[0] + '.wav'
+    
+    if file_path != audio_path:
         try:
             subprocess.run(["ffmpeg", "-y", "-i", file_path, "-vn", "-acodec", "pcm_s16le", "-ar", "44100", "-ac", "2", audio_path], check=True, capture_output=True)
             file_path = audio_path
-            print(f"[{task_id}] Successfully converted video to {audio_path}")
+            print(f"[{task_id}] Successfully converted to standard WAV: {audio_path}")
         except subprocess.CalledProcessError as e:
-            print(f"[{task_id}] FFmpeg extraction error.")
+            print(f"[{task_id}] FFmpeg extraction error. {e.stderr.decode('utf-8')}")
             TASKS[task_id]['status'] = 'error'
-            TASKS[task_id]['error'] = "Failed to extract audio from the uploaded video file."
+            TASKS[task_id]['error'] = "Failed to decode the uploaded file."
             return
 
     # htdemucs separates into 4 stems: vocals, drums, bass, other
@@ -55,7 +55,7 @@ def process_audio(task_id, file_path):
     ]
     
     try:
-        subprocess.run(command, check=True)
+        result = subprocess.run(command, check=True, capture_output=True, text=True)
         # Find the output folder
         base_name = os.path.splitext(os.path.basename(file_path))[0]
         output_dir = os.path.join(SEPARATED_FOLDER, model, base_name)
@@ -71,9 +71,11 @@ def process_audio(task_id, file_path):
             TASKS[task_id]['error'] = 'Output directory not found after processing.'
             
     except subprocess.CalledProcessError as e:
-        print(f"[{task_id}] Error running demucs: {e}")
+        print(f"[{task_id}] Error running demucs: {e.stderr}")
         TASKS[task_id]['status'] = 'error'
-        TASKS[task_id]['error'] = str(e)
+        # Pass the exact Demucs error log to the frontend
+        error_msg = e.stderr.strip().split('\n')[-1] if e.stderr else str(e)
+        TASKS[task_id]['error'] = f"Demucs crash: {error_msg}"
     except Exception as e:
         print(f"[{task_id}] Unexpected error: {e}")
         TASKS[task_id]['status'] = 'error'
