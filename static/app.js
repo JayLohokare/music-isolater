@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
         processingStatus.textContent = "Uploading...";
 
         try {
-            const response = await fetch('https://jaylohokare-aura-splitter.hf.space/upload', {
+            const response = await fetch(`${API_BASE}/upload`, {
                 method: 'POST',
                 body: formData
             });
@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const interval = setInterval(async () => {
             try {
-                const response = await fetch(`https://jaylohokare-aura-splitter.hf.space/status/${taskId}`);
+                const response = await fetch(`${API_BASE}/status/${taskId}`);
                 
                 const contentType = response.headers.get("content-type");
                 if (!contentType || !contentType.includes("application/json")) {
